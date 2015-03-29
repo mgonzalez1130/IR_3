@@ -1,44 +1,71 @@
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.PriorityQueue;
 
 public class testingStuff {
 
+    static HashMap<String, MyUrl> frontierContents;
+    static PriorityQueue<MyUrl> testSet;
+
     public static void main(String[] args) {
 
-        MyUrl url1 = new MyUrl("www.google.com", 1);
-        MyUrl url2 = new MyUrl("www.facebook.com", 2);
-        MyUrl url3 = new MyUrl("www.yahoo.com", 3);
-        MyUrl url4 = new MyUrl("www.yahoo.com", 4);
+        MyUrl url1 = new MyUrl("www.google.com", (long) 1, true);
+        MyUrl url2 = new MyUrl("www.facebook.com", (long) 2, false);
+        MyUrl url3 = new MyUrl("www.yahoo.com", (long) 1, false);
+        MyUrl url4 = new MyUrl("www.yahoo.com", (long) 2, false);
 
-        TreeSet<MyUrl> testSet = new TreeSet<MyUrl>(new Comparator<MyUrl>() {
+        url1.addInLink("www.yahoo.com");
+        System.out.print(url1.prettyPrint());
+
+        frontierContents = new HashMap<String, MyUrl>();
+
+        testSet = new PriorityQueue<MyUrl>(new Comparator<MyUrl>() {
             @Override
             public int compare(MyUrl url1, MyUrl url2) {
-                int res = url1.getInLinks().compareTo(url2.getInLinks());
-                return res != 0 ? res : 1;
+                if (url1.isSeed()) {
+                    return -1;
+                } else if (url2.isSeed()) {
+                    return 1;
+                }
+                int res = url1.getNumInLinks().compareTo(url2.getNumInLinks())
+                        * -1;
+
+                if (res == 0) {
+                    res = url1.getTimeStamp().compareTo(url2.getTimeStamp());
+                }
+                return res;
             }
         });
 
-        testSet.add(url3);
-        testSet.add(url2);
-        testSet.add(url1);
-        testSet.add(url4);
-        testSet.remove(url3);
+        addUrl(url1);
+        addUrl(url2);
+        addUrl(url3);
 
-        if (testSet.contains(url3)) {
-            testSet.remove(url3);
-            testSet.add(url4);
-        }
+        printSet();
 
+        testSet.poll();
+
+        printSet();
+
+    }
+
+    protected static void printSet() {
         System.out.println("Size: " + testSet.size());
-
         Iterator<MyUrl> it = testSet.iterator();
-
         while (it.hasNext()) {
             MyUrl next = it.next();
             System.out.println("Url: " + next.getUrl() + "  InLinks: "
-                    + next.getInLinks());
+                    + next.getNumInLinks());
         }
+        System.out.println();
     }
 
+    private static void addUrl(MyUrl url) {
+        if (frontierContents.containsKey(url.getUrl())) {
+            testSet.remove(frontierContents.get(url.getUrl()));
+        }
+        testSet.add(url);
+        frontierContents.put(url.getUrl(), url);
+    }
 }
