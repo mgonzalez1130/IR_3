@@ -39,5 +39,6 @@
 	<classpathentry kind="lib" path="C:/Users/Moses/Desktop/Information Retrieval/crawlercommons-dist-0.1/lib/slf4j-api-1.6.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Moses/Desktop/Information Retrieval/crawlercommons-dist-0.1/lib/tika-core-0.9.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Moses/Desktop/Information Retrieval/slf4j-1.7.12/slf4j-simple-1.7.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Moses/Desktop/Information Retrieval/commons-io-2.4/commons-io-2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

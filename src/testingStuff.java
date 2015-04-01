@@ -10,12 +10,12 @@ public class testingStuff {
 
     public static void main(String[] args) {
 
-        MyUrl url1 = new MyUrl("www.google.com", (long) 1, true);
-        MyUrl url2 = new MyUrl("www.facebook.com", (long) 2, false);
-        MyUrl url3 = new MyUrl("www.yahoo.com", (long) 1, false);
-        MyUrl url4 = new MyUrl("www.yahoo.com", (long) 2, false);
+        MyUrl url1 = new MyUrl("www.google.com", (long) 4, false);
+        MyUrl url2 = new MyUrl("www.facebook.com", (long) 3, false);
+        MyUrl url3 = new MyUrl("www.yahoo.com", (long) 2, false);
+        MyUrl url4 = new MyUrl("www.gmail.com", (long) 1, false);
 
-        url1.addInLink("www.yahoo.com");
+        // url1.addInLink("www.yahoo.com");
         System.out.print(url1.prettyPrint());
 
         frontierContents = new HashMap<String, MyUrl>();
@@ -41,11 +41,15 @@ public class testingStuff {
         addUrl(url1);
         addUrl(url2);
         addUrl(url3);
+        addUrl(url4);
 
         printSet();
 
         testSet.poll();
 
+        printSet();
+
+        testSet.poll();
         printSet();
 
     }

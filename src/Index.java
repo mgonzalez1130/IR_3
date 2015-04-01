@@ -6,6 +6,8 @@ import java.util.concurrent.ExecutionException;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentFactory;
 
@@ -14,10 +16,13 @@ public class Index {
     private Client client;
     private ArrayList<String> emptyArrayList;
 
+    @SuppressWarnings("resource")
     public Index() {
-        client = new TransportClient()
-        .addTransportAddress(new InetSocketTransportAddress(
-                "10.0.0.12", 9300));
+        Settings settings = ImmutableSettings.settingsBuilder()
+                .put("cluster.name", "clarke").build();
+        client = new TransportClient(settings)
+                .addTransportAddress(new InetSocketTransportAddress(
+                        "10.0.0.12", 9300));
         emptyArrayList = new ArrayList<String>();
     }
 
@@ -30,13 +35,13 @@ public class Index {
         pageMap.put("in-links", emptyArrayList.toArray());
         pageMap.put("out-links", page.getOutlinks().toArray());
 
-        client.prepareIndex("test_crawler", "document", page.getUrl())
-        .setSource(pageMap).execute().actionGet();
+        client.prepareIndex("crawler", "document", page.getUrl())
+                .setSource(pageMap).execute().actionGet();
     }
 
     public void addInLinks(MyUrl url) {
         UpdateRequest update = new UpdateRequest();
-        update.index("test_crawler");
+        update.index("crawler");
         update.type("document");
         update.id(url.getUrl());
         try {
@@ -50,5 +55,9 @@ public class Index {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    public void close() {
+        client.close();
     }
 }
