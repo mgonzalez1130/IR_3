@@ -21,7 +21,7 @@ public class MergeIndex {
 
     private static int counter = 0;
     private static String index1Name = "crawler";
-    private static String index2Name = "crawler_moses";
+    private static String index2Name = "crawler_austin";
 
     public static void main(String args[]) {
 
@@ -34,7 +34,7 @@ public class MergeIndex {
         SearchResponse scrollResp = client.prepareSearch(index1Name)
                 .setSearchType(SearchType.QUERY_THEN_FETCH)
                 .setScroll(new TimeValue(60000))
-                .setQuery(QueryBuilders.matchAllQuery()).setSize(100).execute()
+                .setQuery(QueryBuilders.matchAllQuery()).setSize(50).execute()
                 .actionGet();
 
         System.out.println("Number of hits: "

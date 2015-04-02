@@ -14,13 +14,13 @@ public class CopyIndex {
     public static void main(String args[]) {
 
         String index1Name = "crawler";
-        String index2Name = "crawler_moses";
+        String index2Name = "crawler_austin";
 
         Settings settings = ImmutableSettings.settingsBuilder()
                 .put("cluster.name", "clarke").build();
         Client client = new TransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress(
-                        "10.0.0.12", 9300));
+        .addTransportAddress(new InetSocketTransportAddress(
+                "10.0.0.12", 9300));
 
         SearchResponse scrollResp = client.prepareSearch(index1Name)
                 .setSearchType(SearchType.QUERY_THEN_FETCH)
@@ -35,7 +35,7 @@ public class CopyIndex {
         while (true) {
             for (SearchHit hit : scrollResp.getHits().getHits()) {
                 client.prepareIndex(index2Name, "document", hit.getId())
-                .setSource(hit.getSource()).execute();
+                        .setSource(hit.getSource()).execute();
                 counter++;
             }
 
